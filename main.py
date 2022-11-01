@@ -1,10 +1,17 @@
 from engine import CustomerEngine, OrderingEngine, ProductEngine
 from utils import clear
 
+"""
+--------------------------------------
+| Authors: Phạm Thế Hưng             |
+| Licenses: MIT                      |
+| Emails: phamhung20022015@gmail.com |
+--------------------------------------
+"""
 
 def display_base_menu():
     return """
-1. Product 
+1. Product
 2. Customer
 3. Ordering
 0. Quit

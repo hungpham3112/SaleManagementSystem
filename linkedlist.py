@@ -8,7 +8,7 @@ class LinkedList:
         self.size = 0
 
     def __iter__(self):
-        git@github.com:hungpham3112/SaleManagementSystem.gitnode = self.head
+        node = self.head
         while node:
             yield node
             node = node.next
