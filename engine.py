@@ -81,9 +81,9 @@ class Engine:
 
             if isinstance(node.data, Customer):
                 if not self.linkedlist.search(code):
-                    print(f"{code}")
-                else:
                     print(f"Delete {node.data._ccode} successfully")
+                else:
+                    print(f"{code} does not exist!!!")
         except Exception:
             print(f"{code} is invalid input")
         input("Press Enter to continue...")
