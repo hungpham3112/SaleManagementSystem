@@ -148,22 +148,22 @@ class CustomerLinkedList(LinkedList):
             current = current.next
         return False
 
-    def pop_code(self, pcode: str):
+    def pop_code(self, ccode: str):
         if len(self) == 1 or self.head == None:
             return
 
-        if self.head.data._ccode == pcode:
+        if self.head.data._ccode == ccode:
             temp = self.head
             self.head = self.head.next
             return temp
 
         current = self.head
         while current.next:
-            product = current.next.data
-            if product._pcode == pcode:
+            customer = current.next
+            if customer.data._ccode == ccode:
                 current.next = current.next.next
                 self.size -= 1
-                return product
+                return customer
             current = current.next
 
 

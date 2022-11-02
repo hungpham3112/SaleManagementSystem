@@ -9,6 +9,7 @@ from utils import clear
 --------------------------------------
 """
 
+
 def display_base_menu():
     return """
 1. Product
