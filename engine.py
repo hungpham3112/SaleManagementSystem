@@ -8,7 +8,6 @@ from copy import deepcopy
 
 product_data, customer_data, ordering_data = ProductLinkedList(), CustomerLinkedList(), OrderingLinkedList()
 product_table, customer_table = "",""
-keep_track_quantity = 0
 
 
 class Engine:
@@ -384,6 +383,7 @@ class CustomerEngine(Engine):
 
 
 class OrderingEngine(Engine):
+    matching_list, value_list = [], []
     def __init__(self):
         super().__init__()
         self.linkedlist = ordering_data
@@ -396,7 +396,6 @@ class OrderingEngine(Engine):
                         pcode = formatted_input("Enter pcode (blank to leave): ")
                         product_search = product_data.search(pcode)
                         if pcode == "":
-                            #  return self.linkedlist
                             return True
                         elif (
                             pcode[0] != "P"
@@ -407,7 +406,7 @@ class OrderingEngine(Engine):
                                 "Invalid product code. The format should be: P<number>. E.g: P02, P299..."
                             )
                             continue
-                        elif product_search == False:
+                        elif product_search in (False, None):
                             print(f"{pcode} is not in database")
                             continue
                         ccode = formatted_input("Enter ccode: ")
@@ -422,7 +421,7 @@ class OrderingEngine(Engine):
                                 "Invalid product code. The format should be: C<number>. E.g: C02, C299..."
                             )
                             continue
-                        elif customer_search == False:
+                        elif customer_search in (False, None):
                             print(f"{ccode} is not in database")
                             continue
                         global ordering_data
@@ -444,8 +443,8 @@ class OrderingEngine(Engine):
                             self.linkedlist.append(Node(Ordering(pcode, ccode, quantity)))
                             product_search._saled += quantity
                             print("Order successfully!!!")
-                            global keep_track_quantity
-                            keep_track_quantity = quantity
+                            self.matching_list.append((pcode, ccode))
+                            self.value_list.append(f"{product_data.search(pcode)._price * quantity:.1f}")
                         else:
                             print("Not enough item to order!!!")
                             continue
@@ -458,10 +457,8 @@ class OrderingEngine(Engine):
                 self.option3()
                 return True
             case "3":
-                temp = deepcopy(self.linkedlist)
-                self.linkedlist.sort_by_object()
-                self.option3()
-                self.linkedlist = temp
+                print(self.display_sorted_data())
+                input("Press Enter to continue...")
                 return True
             case "0":
                 ordering_data = self.linkedlist
@@ -485,11 +482,22 @@ class OrderingEngine(Engine):
             data = node.data
             pcode = data._pcode
             ccode = data._ccode
-            value = f"{keep_track_quantity * product_data.search(pcode)._price:.1f}"
+        global value_list
+        for (pcode, ccode), value in zip(self.matching_list, self.value_list):
             detail += f"{pcode:<{space}}|{ccode:<{space}}|{value:<{space}}\n"
         table = f"{first_line}\n{separate_line}\n{detail}"
         return table
 
+    def display_sorted_data(self):
+        space = 15
+        first_line = f"{'Pcode':<{space}}|{'Ccode':<{space}}|{'Value':<{space}}"
+        separate_line = "-" * space * 3
+        detail = ""
+        global value_list
+        for (pcode, ccode), value in sorted(zip(self.matching_list, self.value_list)):
+            detail += f"{pcode:<{space}}|{ccode:<{space}}|{value:<{space}}\n"
+        table = f"{first_line}\n{separate_line}\n{detail}"
+        return table
 
 if __name__ == "__main__":
     customer_engine = CustomerEngine()
